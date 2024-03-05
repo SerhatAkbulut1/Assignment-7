@@ -330,247 +330,41 @@ public class DuckHunt extends Application {
      * Starts the game by transitioning from the welcome screen to the game screen.
      */
 
-    private void startGame() {
-        // Start the game
-        String crosshairPath = CROSSHAIR_PATHS[currentCrosshairIndex];
-        Image crosshairImage = new Image(getClass().getResourceAsStream(crosshairPath));
-        ImageView crosshairImageView = new ImageView(crosshairImage);
-        crosshairImageView.setPreserveRatio(true);
-        crosshairImageView.setFitWidth(Width/30);
-        crosshairImageView.setFitHeight(Height/30);
-        crosshairImageView.setX(Width/2);
-        crosshairImageView.setY(Height/2);
-        removeCrosshair();
-
-        gameStarted = true;
-        Level1 level1 = new Level1(backgrounds[currentBackgroundIndex],foregrounds[currentBackgroundIndex],crosshairImage);
-        Scene scene = new Scene(level1.getLevelPane());
-        Stage stage = new Stage();
-        stage.setTitle(TITLE);
-        stage.getIcons().add(new Image(getClass().getResourceAsStream(FAVICON_PATH)));
-        stage.setScene(scene);
-        scene.setOnKeyPressed(e -> handleKEyPress(e.getCode(),level1,level1.getLevelPane(),scene,stage,backgrounds[currentBackgroundIndex],foregrounds[currentBackgroundIndex],crosshairImage));
-        stage.show();
-
-        primaryStage.close();
-
-    }
-    private void startGame2() {
-        // Start the game
-        String crosshairPath = CROSSHAIR_PATHS[currentCrosshairIndex];
-        Image crosshairImage = new Image(getClass().getResourceAsStream(crosshairPath));
-        ImageView crosshairImageView = new ImageView(crosshairImage);
-        crosshairImageView.setPreserveRatio(true);
-        crosshairImageView.setFitWidth(Width/30);
-        crosshairImageView.setFitHeight(Height/30);
-        crosshairImageView.setX(Width/2);
-        crosshairImageView.setY(Height/2);
-        removeCrosshair();
-
-        gameStarted = true;
-        Level2 level2 = new Level2(backgrounds[currentBackgroundIndex],foregrounds[currentBackgroundIndex],crosshairImage);
-        Scene scene = new Scene(level2.getLevelPane());
-        Stage stage = new Stage();
-        stage.setTitle(TITLE);
-        stage.getIcons().add(new Image(getClass().getResourceAsStream(FAVICON_PATH)));
-        stage.setScene(scene);
-        scene.setOnKeyPressed(e -> handleKEyPress2(e.getCode(),level2,level2.getLevelPane(),scene,stage,backgrounds[currentBackgroundIndex],foregrounds[currentBackgroundIndex],crosshairImage));
-        stage.show();
-
-        primaryStage.close();
-
-    }
-    private void startGame3() {
-        // Start the game
-        String crosshairPath = CROSSHAIR_PATHS[currentCrosshairIndex];
-        Image crosshairImage = new Image(getClass().getResourceAsStream(crosshairPath));
-        ImageView crosshairImageView = new ImageView(crosshairImage);
-        crosshairImageView.setPreserveRatio(true);
-        crosshairImageView.setFitWidth(Width/30);
-        crosshairImageView.setFitHeight(Height/30);
-        crosshairImageView.setX(Width/2);
-        crosshairImageView.setY(Height/2);
-        removeCrosshair();
-
-        gameStarted = true;
-        Level3 level3 = new Level3(backgrounds[currentBackgroundIndex],foregrounds[currentBackgroundIndex],crosshairImage);
-        Scene scene = new Scene(level3.getLevelPane());
-        Stage stage = new Stage();
-        stage.setTitle(TITLE);
-        stage.getIcons().add(new Image(getClass().getResourceAsStream(FAVICON_PATH)));
-        stage.setScene(scene);
-        scene.setOnKeyPressed(e -> handleKEyPress3(e.getCode(),level3,level3.getLevelPane(),scene,stage,backgrounds[currentBackgroundIndex],foregrounds[currentBackgroundIndex],crosshairImage));
-        stage.show();
-
-        primaryStage.close();
-
-    }
-    private void startGame4() {
-        // Start the game
-        String crosshairPath = CROSSHAIR_PATHS[currentCrosshairIndex];
-        Image crosshairImage = new Image(getClass().getResourceAsStream(crosshairPath));
-        ImageView crosshairImageView = new ImageView(crosshairImage);
-        crosshairImageView.setPreserveRatio(true);
-        crosshairImageView.setFitWidth(Width/30);
-        crosshairImageView.setFitHeight(Height/30);
-        crosshairImageView.setX(Width/2);
-        crosshairImageView.setY(Height/2);
-        removeCrosshair();
-
-        gameStarted = true;
-        Level4 level4 = new Level4(backgrounds[currentBackgroundIndex],foregrounds[currentBackgroundIndex],crosshairImage);
-        Scene scene = new Scene(level4.getLevelPane());
-        Stage stage = new Stage();
-        stage.setTitle(TITLE);
-        stage.getIcons().add(new Image(getClass().getResourceAsStream(FAVICON_PATH)));
-        stage.setScene(scene);
-        scene.setOnKeyPressed(e -> handleKEyPress4(e.getCode(),level4,level4.getLevelPane(),scene,stage,backgrounds[currentBackgroundIndex],foregrounds[currentBackgroundIndex],crosshairImage));
-        stage.show();
-
-        primaryStage.close();
-
-    }
-    private void startGame5() {
-        // Start the game
-        String crosshairPath = CROSSHAIR_PATHS[currentCrosshairIndex];
-        Image crosshairImage = new Image(getClass().getResourceAsStream(crosshairPath));
-        ImageView crosshairImageView = new ImageView(crosshairImage);
-        crosshairImageView.setPreserveRatio(true);
-        crosshairImageView.setFitWidth(Width/30);
-        crosshairImageView.setFitHeight(Height/30);
-        crosshairImageView.setX(Width/2);
-        crosshairImageView.setY(Height/2);
-        removeCrosshair();
-
-        gameStarted = true;
-        Level5 level5 = new Level5(backgrounds[currentBackgroundIndex],foregrounds[currentBackgroundIndex],crosshairImage);
-        Scene scene = new Scene(level5.getLevelPane());
-        Stage stage = new Stage();
-        stage.setTitle(TITLE);
-        stage.getIcons().add(new Image(getClass().getResourceAsStream(FAVICON_PATH)));
-        stage.setScene(scene);
-        scene.setOnKeyPressed(e -> handleKEyPress5(e.getCode(),level5,level5.getLevelPane(),scene,stage,backgrounds[currentBackgroundIndex],foregrounds[currentBackgroundIndex],crosshairImage));
-        stage.show();
-
-        primaryStage.close();
-
-    }
-    private void startGame6() {
-        // Start the game
-        String crosshairPath = CROSSHAIR_PATHS[currentCrosshairIndex];
-        Image crosshairImage = new Image(getClass().getResourceAsStream(crosshairPath));
-        ImageView crosshairImageView = new ImageView(crosshairImage);
-        crosshairImageView.setPreserveRatio(true);
-        crosshairImageView.setFitWidth(Width/30);
-        crosshairImageView.setFitHeight(Height/30);
-        crosshairImageView.setX(Width/2);
-        crosshairImageView.setY(Height/2);
-        removeCrosshair();
-
-        gameStarted = true;
-        Level6 level6 = new Level6(backgrounds[currentBackgroundIndex],foregrounds[currentBackgroundIndex],crosshairImage);
-        Scene scene = new Scene(level6.getLevelPane());
-        Stage stage = new Stage();
-        stage.setTitle(TITLE);
-        stage.getIcons().add(new Image(getClass().getResourceAsStream(FAVICON_PATH)));
-        stage.setScene(scene);
-        scene.setOnKeyPressed(e -> handleKEyPress6(e.getCode(),level6,level6.getLevelPane(),scene,stage,backgrounds[currentBackgroundIndex],foregrounds[currentBackgroundIndex],crosshairImage));
-        stage.show();
-
-        primaryStage.close();
-
-    }
-    private void handleKEyPress(KeyCode keyCode,Level1 level1,Pane Pane,Scene scene,Stage stage,Image background,Image foreground,Image crosshairImage) {
-        if(keyCode == keyCode.ENTER && level1Complate){
-            level1.MusicPlayer.stop();
-            stage.close();
-            startGame2();
-        }
-        if(keyCode == keyCode.ENTER && !level1Complate){
-            stage.close();
-            startGame();
-        }
-
-        if(keyCode == keyCode.ESCAPE ){
-            stage.close();
-            startGame();
-        }
-    }
-    private void handleKEyPress2(KeyCode keyCode,Level2 level2,Pane Pane,Scene scene,Stage stage,Image background,Image foreground,Image crosshairImage) {
-        if(keyCode == keyCode.ENTER && level2Complate){
-            level2.MusicPlayer.stop();
-            stage.close();
-            startGame3();
-        }
-        if(keyCode == keyCode.ENTER && !level2Complate){
-            stage.close();
-            startGame2();
-        }
-        if(keyCode == keyCode.ESCAPE ){
-            stage.close();
-            startGame();
-        }
-    }
-    private void handleKEyPress3(KeyCode keyCode,Level3 level3,Pane Pane,Scene scene,Stage stage,Image background,Image foreground,Image crosshairImage) {
-        if(keyCode == keyCode.ENTER && level3Complate){
-            level3.MusicPlayer.stop();
-            stage.close();
-            startGame4();
-        }
-        if(keyCode == keyCode.ENTER && !level3Complate){
-            stage.close();
-            startGame3();
-        }
-        if(keyCode == keyCode.ESCAPE ){
-            stage.close();
-            startGame();
-        }
-    }
-    private void handleKEyPress4(KeyCode keyCode,Level4 level4,Pane Pane,Scene scene,Stage stage,Image background,Image foreground,Image crosshairImage) {
-        if(keyCode == keyCode.ENTER && level4Complate){
-            level4.MusicPlayer.stop();
-            stage.close();
-            startGame5();
-        }
-        if(keyCode == keyCode.ENTER && !level4Complate){
-            stage.close();
-            startGame4();
-
-        }
-        if(keyCode == keyCode.ESCAPE ){
-            stage.close();
-            startGame();
-        }
-    }
-    private void handleKEyPress5(KeyCode keyCode,Level5 level5,Pane Pane,Scene scene,Stage stage,Image background,Image foreground,Image crosshairImage) {
-        if(keyCode == keyCode.ENTER && level5Complate){
-            level5.MusicPlayer.stop();
-            stage.close();
-            startGame6();
-        }
-        if(keyCode == keyCode.ENTER && !level5Complate){
-            stage.close();
-            startGame5();
-        }
-        if(keyCode == keyCode.ESCAPE ){
-            stage.close();
-            startGame();
-        }
-    }
-    private void handleKEyPress6(KeyCode keyCode,Level6 level6,Pane Pane,Scene scene,Stage stage,Image background,Image foreground,Image crosshairImage) {
-        if(keyCode == keyCode.ENTER && level6Complate){
-            //level6.MusicPlayer.stop();
-            stage.close();
-            startGame();
-        }
-        if(keyCode == keyCode.ENTER && !level6Complate){
-            stage.close();
-            startGame6();
-        }
-        if(keyCode == keyCode.ESCAPE ){
-            stage.close();
-            startGame();
-        }
-    }
-
+   private void startGame(Level level) {
+    gameStarted = true;
+    Scene scene = new Scene(level.getLevelPane());
+    scene.setOnKeyPressed(e -> handleKeyPress(e.getCode(), level));
+    primaryStage.setScene(scene);
+    primaryStage.show();
 }
+
+private void startLevel1() {
+    Level1 level1 = new Level1(backgrounds[currentBackgroundIndex], foregrounds[currentBackgroundIndex], crosshairImage);
+    startGame(level1);
+}
+
+private void startLevel2() {
+    Level2 level2 = new Level2(backgrounds[currentBackgroundIndex], foregrounds[currentBackgroundIndex], crosshairImage);
+    startGame(level2);
+}
+
+private void startLevel3() {
+    Level3 level3 = new Level3(backgrounds[currentBackgroundIndex], foregrounds[currentBackgroundIndex], crosshairImage);
+    startGame(level3);
+}
+
+private void startLevel4() {
+    Level4 level4 = new Level4(backgrounds[currentBackgroundIndex], foregrounds[currentBackgroundIndex], crosshairImage);
+    startGame(level4);
+}
+
+private void startLevel5() {
+    Level5 level5 = new Level5(backgrounds[currentBackgroundIndex], foregrounds[currentBackgroundIndex], crosshairImage);
+    startGame(level5);
+}
+
+private void startLevel6() {
+    Level6 level6 = new Level6(backgrounds[currentBackgroundIndex], foregrounds[currentBackgroundIndex], crosshairImage);
+    startGame(level6);
+}
+

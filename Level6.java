@@ -1,285 +1,116 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.ImageCursor;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
 
-/**
- * Represents the first level of the Duck Hunt game.
- */
-public class Level6 {
-    private static final String GUNSHOT_SOUND_PATH = "assets/effects/Gunshot.mp3";
-    private static final String LEVEL_COMPLETED_SOUND_PATH = "assets/effects/GameCompleted.mp3";
-    private static final String GAME_OVER_SOUND_PATH = "assets/effects/GameOver.mp3";
-    private Image background;
-    private Image foreground;
-    private Image crosshairImage;
-    MediaPlayer GunShotvoice;
-    static MediaPlayer MusicPlayer;
-    private ImageView backgroundImageView;
-    private ImageView foregroundImageView;
-    private ImageView crosshairImageView;
-    private Text bulletCountText;
-    private Text statusText;
-    private Text statusText2;
-    private Text levelText;
-    private boolean levelComplate = false;
+public class Level6 extends Level {
+    private final Duck blackDuck1Type2;
+    private final Duck blackDuck2Type2;
+    private final Duck redDuck1Type2;
+    private final Duck redDuck2Type2;
+    private final Duck blueDuck1Type2;
+    private final Duck blueDuck2Type2;
 
-    private List<Duck> ducks;
-    private int bullets = 9;
-    RedDuck redDuck = new RedDuck(150,25 , 5, -5);
-    BlueDuck blueDuck= new BlueDuck(25,25 , 5, -5);
-    BlackDuck blackDuck = new BlackDuck(100, 25, 4, -4);
+    public Level6(Stage stage, int bgIndex, int crosshairIndex) {
+        super(stage, bgIndex, crosshairIndex);
 
+        blackDuck1Type2 = createBlackDuckType2(214, 70, 20, -10);
+        blackDuck2Type2 = createBlackDuckType2(200, 210, -25, -13);
+        redDuck1Type2 = createRedDuckType2(119, 186, -15, -14);
+        redDuck2Type2 = createRedDuckType2(123, 212, 20, -11);
+        blueDuck1Type2 = createBlueDuckType2(15, 214, 20, -12);
+        blueDuck2Type2 = createBlueDuckType2(177, 176, -20, -10);
 
-    private Pane levelPane;
+        addDucksToList(blackDuck1Type2, blackDuck2Type2, redDuck1Type2, redDuck2Type2, blueDuck1Type2, blueDuck2Type2);
 
-    /**
-     * Constructs a Level1 object with the specified background, foreground, and crosshair image.
-     *
-     * @param background      The image used as the background of the level.
-     * @param foreground      The image used as the foreground of the level.
-     * @param crosshairImage  The image used as the crosshair.
-     */
-    public Level6( Image background, Image foreground, Image crosshairImage) {
-        this.background = background;
-        this.foreground = foreground;
-        this.crosshairImage = crosshairImage;
-
-        ducks = new ArrayList<>();
-        initializeLevelPane();
-        initializeBackground();
-        initializelevelText("Level 6/6");
-        spawnDucks();
-        startDuckMovements();
-        initializeForeground();
-        initializeCrosshair();
-        initializeBullets();
-        initializeStatusText();
-        moveAbleStatusText();
-
-
-    }
-    /**
-     * Initializes the level pane.
-     */
-    private void initializeLevelPane() {
-        levelPane = new Pane();
-        levelPane.setPrefSize(background.getWidth()*DuckHunt.Scale, background.getHeight()*DuckHunt.Scale);
-
+        setupScene();
     }
 
-    /**
-     * Initializes the background image view.
-     */
-    private void initializeBackground() {
-        backgroundImageView = new ImageView(background);
-        backgroundImageView.setFitHeight(background.getHeight()*DuckHunt.Scale);
-        backgroundImageView.setFitWidth(background.getWidth()*DuckHunt.Scale);
-        levelPane.getChildren().add(backgroundImageView);
+    private Duck createBlackDuckType2(double xPosition, double yPosition, double xVelocity, double yVelocity) {
+        Duck blackDuckType2 = new BlackDuck();
+        configureDuck(blackDuckType2, blackDuckType2.image1, blackDuckType2.image2, blackDuckType2.image3, xVelocity, yVelocity, xPosition, yPosition);
+        return blackDuckType2;
     }
-    /**
-     * Initializes the foreground image view.
-     */
-    private void initializeForeground() {
-        foregroundImageView = new ImageView(foreground);
-        foregroundImageView.setFitWidth(background.getWidth()*DuckHunt.Scale);
-        foregroundImageView.setFitHeight(background.getHeight()*DuckHunt.Scale);
-        foregroundImageView.setDisable(true);
-        levelPane.getChildren().add(foregroundImageView);
+
+    private Duck createRedDuckType2(double xPosition, double yPosition, double xVelocity, double yVelocity) {
+        Duck redDuckType2 = new RedDuck();
+        configureDuck(redDuckType2, redDuckType2.image1, redDuckType2.image2, redDuckType2.image3, xVelocity, yVelocity, xPosition, yPosition);
+        return redDuckType2;
     }
-    /**
-     * Initializes the crosshair image view and handles mouse and keyboard events.
-     */
-    private void initializeCrosshair() {
-        crosshairImageView = new ImageView(crosshairImage);
-        crosshairImageView.setFitHeight(5*DuckHunt.Scale);
-        crosshairImageView.setFitWidth(5*DuckHunt.Scale);
-        crosshairImageView.setMouseTransparent(true);
-        crosshairImageView.setTranslateX(levelPane.getPrefWidth() / 2 - crosshairImageView.getImage().getWidth() / 2);
-        crosshairImageView.setTranslateY(levelPane.getPrefHeight() / 2 - crosshairImageView.getImage().getHeight() / 2);
-        levelPane.getChildren().add(crosshairImageView);
 
-        levelPane.setOnMouseMoved(event -> {
-            crosshairImageView.setTranslateX(event.getX() - crosshairImageView.getImage().getWidth() / 2);
-            crosshairImageView.setTranslateY(event.getY() - crosshairImageView.getImage().getHeight() / 2);
-        });
-        levelPane.setOnMouseClicked(event -> {
-            List<Duck> deadDucks = new ArrayList<>();
-            if (bullets > 0) {
-                if(!isLevelComplate()){
-                    Media GunShot = new Media(getClass().getResource(GUNSHOT_SOUND_PATH).toString());
-                    GunShotvoice = new MediaPlayer(GunShot);
-                    GunShotvoice.setCycleCount(1);
-                    GunShotvoice.setVolume(DuckHunt.Volume);
-                    GunShotvoice.play();
-                    bullets--;
-                    updateBulletCountText();
-                    for (Duck duck : ducks) {
-                        if (duck instanceof RedDuck && ((RedDuck) duck).isShot()) {
-                            deadDucks.add(duck);
-                        }
-                        if(duck instanceof BlackDuck && ((BlackDuck) duck).isShot()){
-                            deadDucks.add(duck);
-                        }
-                        if((duck instanceof BlueDuck && ((BlueDuck) duck).isShot())){
-                            deadDucks.add(duck);
-                        }
-                    }
-                }
-            }
-            if (bullets == 0 && deadDucks.size() < 3) {
-                statusText.setText("\t\tGAME OVER!");
-                statusText2.setText("Press ENTER to play again\n\t Press ESC to exit");
-                statusText.toFront();
-                statusText2.toFront();
-                DuckHunt.level6Complate = false;
-                Media gameOver = new Media(getClass().getResource(GAME_OVER_SOUND_PATH).toString());
-                MusicPlayer = new MediaPlayer(gameOver);
-                MusicPlayer.setCycleCount(1);
-                MusicPlayer.setVolume(DuckHunt.Volume);
-                GunShotvoice.stop();
-                MusicPlayer.play();
+    private Duck createBlueDuckType2(double xPosition, double yPosition, double xVelocity, double yVelocity) {
+        Duck blueDuckType2 = new BlueDuck();
+        configureDuck(blueDuckType2, blueDuckType2.image1, blueDuckType2.image2, blueDuckType2.image3, xVelocity, yVelocity, xPosition, yPosition);
+        return blueDuckType2;
+    }
 
-            } else if (bullets >=0 && deadDucks.size()==3) {
-                statusText.setText("You have completed the game!");
-                statusText2.setText("Press ENTER to play again\n\t Press ESC to exit");
-                statusText.toFront();
-                statusText2.toFront();
-                levelComplate = true;
-                DuckHunt.level6Complate = true;
-                Media levelComplate = new Media(getClass().getResource(LEVEL_COMPLETED_SOUND_PATH).toString());
-                MediaPlayer MusicPlayer = new MediaPlayer(levelComplate);
-                MusicPlayer.setCycleCount(1);
-                MusicPlayer.setVolume(DuckHunt.Volume);
-                redDuck.MusicPlayer.stop();
-                blackDuck.MusicPlayer.stop();
-                blueDuck.MusicPlayer.stop();
-                GunShotvoice.stop();
-                MusicPlayer.play();
-                return;
+    private void configureDuck(Duck duck, Image image1, Image image2, Image image3, double xVelocity, double yVelocity, double xPosition, double yPosition) {
+        duck.flappingAnimationImages = new Image[]{image1, image2, image3};
+        duck.xVelocity = xVelocity;
+        duck.yVelocity = yVelocity;
+        duck.xPosition = xPosition;
+        duck.yPosition = yPosition;
+        duck.duckIW.setX(duck.xPosition * DuckHunt.SCALE);
+        duck.duckIW.setY(duck.yPosition * DuckHunt.SCALE);
+        duck.flyingAnimation = new Timeline(new KeyFrame(Duration.millis(100), event -> duck.fly()));
+        duck.flyingAnimation.setCycleCount(Timeline.INDEFINITE);
+    }
+
+    private void addDucksToList(Duck... ducksToAdd) {
+        for (Duck duck : ducksToAdd) {
+            ducks.add(duck);
+        }
+    }
+
+    @Override
+    public void gameFinished() {
+        isFinished = true;
+
+        youWinText.setText("You have completed the game!");
+        youWinText.setTranslateX(14 * DuckHunt.SCALE);
+        youWinText.setTranslateY(110 * DuckHunt.SCALE);
+
+        enterToNextLevelText.setText("Press ENTER to play again");
+        enterToNextLevelText.setTranslateX(29 * DuckHunt.SCALE);
+        enterToNextLevelText.setTranslateY(126 * DuckHunt.SCALE);
+
+        winFlashTextAnimation = new Timeline(
+                new KeyFrame(Duration.seconds(0.5), evt -> enterToNextLevelText.setVisible(false)),
+                new KeyFrame(Duration.seconds(0.2), evt -> enterToNextLevelText.setVisible(true)),
+                new KeyFrame(Duration.seconds(0.5), evt -> escToExitText.setVisible(false)),
+                new KeyFrame(Duration.seconds(0.2), evt -> escToExitText.setVisible(true)));
+        winFlashTextAnimation.setCycleCount(Animation.INDEFINITE);
+
+        Media levelCompletedAudioEffect = new Media(new File("assets/effects/GameCompleted.mp3").toURI().toString());
+        MediaPlayer levelCompletedAudioEffectPlayer = new MediaPlayer(levelCompletedAudioEffect);
+        levelCompletedAudioEffectPlayer.setVolume(DuckHunt.VOLUME);
+        levelCompletedAudioEffectPlayer.play();
+
+        enterToNextLevelText.setVisible(true);
+        youWinText.setVisible(true);
+        winFlashTextAnimation.play();
+        scene.setOnKeyPressed(keyEvent -> {
+            String key = keyEvent.getCode().toString();
+            if (key.equals("ENTER")) {
+                levelCompletedAudioEffectPlayer.stop();
+                nextLevel();
+            } else if (key.equals("ESCAPE")) {
+                TitleScreen ts = new TitleScreen(stage);
+                ts.setStage();
             }
         });
-
-        ImageCursor cursor = new ImageCursor(crosshairImage);
-        levelPane.setCursor(cursor);
-    }
-    /**
-     * Handles the mouse moved event to track the crosshair position.
-     *
-     * @param event The MouseEvent containing information about the event.
-     */
-    private void handleMouseMoved(MouseEvent event) {
-        crosshairImageView.setTranslateX(event.getX() - crosshairImageView.getImage().getWidth() / 2);
-        crosshairImageView.setTranslateY(event.getY() - crosshairImageView.getImage().getHeight() / 2);
-    }
-    /**
-     * Initializes the bullet count text view.
-     */
-    private void initializeBullets() {
-        bulletCountText = new Text();
-        bulletCountText.setFont(Font.font("Verdana",5*DuckHunt.Scale));
-        bulletCountText.setFill(Color.ORANGE);
-        bulletCountText.setX(210*DuckHunt.Scale);
-        bulletCountText.setY(10*DuckHunt.Scale);
-        updateBulletCountText();
-        levelPane.getChildren().add(bulletCountText);
-    }
-    /**
-     * Updates the bullet count text with the current number of bullets.
-     */
-    private void updateBulletCountText() {
-        bulletCountText.setText("Ammo Left: " + bullets);
-    }
-    /**
-     * Initializes the status text view.
-     */
-    private void initializeStatusText() {
-        statusText = new Text();
-        statusText.setFont(Font.font(18*DuckHunt.Scale));
-        statusText.setFill(Color.ORANGE);
-        statusText.setX(6*DuckHunt.Scale);
-        statusText.setY(100*DuckHunt.Scale);
-        levelPane.getChildren().add(statusText);
     }
 
-    /**
-     * Moves the status text by fading it in and out repeatedly.
-     */
-    public void moveAbleStatusText(){
-        statusText2 = new Text();
-        statusText2.setFont(Font.font(15*DuckHunt.Scale));
-        statusText2.setFill(Color.ORANGE);
-        statusText2.setX(40*DuckHunt.Scale);
-        statusText2.setY(120*DuckHunt.Scale);
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(0), event -> statusText2.setVisible(true)),
-                new KeyFrame(Duration.seconds(1), event -> statusText2.setVisible(false)),
-                new KeyFrame(Duration.seconds(2), event -> statusText2.setVisible(true))
-        );
-        levelPane.getChildren().add(statusText2);
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
-    }
-    /**
-     * Spawns the ducks in the level.
-     */
-    private void spawnDucks() {
-        levelPane.getChildren().add(redDuck);
-        ducks.add(redDuck);
-        levelPane.getChildren().add(blackDuck);
-        ducks.add(blackDuck);
-        levelPane.getChildren().add(blueDuck);
-        ducks.add(blueDuck);
-
-    }
-    /**
-     * Starts the movements of the ducks.
-     */
-    private void startDuckMovements() {
-        blackDuck.moveType2(levelPane);
-        redDuck.moveType2(levelPane);
-        blueDuck.moveType2(levelPane);
-
-    }
-    /**
-     * Returns the level pane containing the level elements.
-     *
-     * @return The Pane representing the level.
-     */
-    public Pane getLevelPane() {
-        return levelPane;
-    }
-
-    /**
-     * Checks if the level is completed.
-     *
-     * @return true if the level is completed, false otherwise.
-     */
-    public boolean isLevelComplate() {
-        return levelComplate;
-    }
-
-    private void initializelevelText(String text) {
-        levelText = new Text(text);
-        levelText.setFont(Font.font("Verdana",5*DuckHunt.Scale));
-        levelText.setFill(Color.ORANGE);
-        levelText.setX(100*DuckHunt.Scale);
-        levelText.setY(10*DuckHunt.Scale);
-        levelPane.getChildren().add(levelText);
+    @Override
+    public void nextLevel() {
+        Level1 level1 = new Level1(stage, bgIndex, crosshairIndex);
+        level1.startGame();
     }
 }
